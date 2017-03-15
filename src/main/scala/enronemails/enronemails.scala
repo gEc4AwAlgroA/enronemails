@@ -7,15 +7,15 @@ object Main {
     // FUTURE - check correct arg length and that argument is a directory
     val dirPath: String = args(0)
     val numberToReturn: Int = args(1).toInt
-    val dirList:Array[java.io.File] = new java.io.File(dirPath).listFiles.filter(_.getName.endsWith(".xml"))
-    val messageList: Array[scala.xml.NodeSeq] = dirList.map(XML.loadFile(_)).map(getMessages(_))
+    val dirList: List[java.io.File] = new java.io.File(dirPath).listFiles.filter(_.getName.endsWith(".xml")).toList
+    val messageList: List[scala.xml.NodeSeq] = dirList.map(getMessagesFromFile(_))
     val emailList: Array[(String, Double)] =
       messageList
       .flatMap(x => getAddresseeList(x, tagNameTo, weightTo) ++ getAddresseeList(x, tagNameCC, weightCC))
       .groupBy(_._1)
       .mapValues(_.map(_._2).sum)
       .toArray.sortBy(_._2).reverse
-    val countSumList: Array[(Int, Int)] = messageList.map(x => getSumCount(x))
+    val countSumList: List[(Int, Int)] = messageList.map(x => getSumCount(x))
 
     val (totalCount, totalSum): (Int, Int) = countSumList.reduce((a, b) => (a._1 + b._1, a._2 + b._2))
     println(s"Average email size ${totalSum/totalCount}")
@@ -29,7 +29,7 @@ object Main {
   val weightTo:Double = 1
   val weightCC:Double = 0.5
 
-  def getMessages(xmlData: scala.xml.Elem): scala.xml.NodeSeq = (xmlData \ "Batch" \ "Documents" \ "Document")
+  def getMessagesFromFile(handle: java.io.File): scala.xml.NodeSeq = (XML.loadFile(handle) \ "Batch" \ "Documents" \ "Document")
     .filter (_.attribute("DocType").getOrElse("").toString == messageIdentifier)
 
   def getAddresseeList(messageList: scala.xml.NodeSeq, tagName: String, weight: Double): Seq[(String, Double)] = {
