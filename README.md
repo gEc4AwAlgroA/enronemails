@@ -10,6 +10,7 @@ and Average Size followed by list of number_results top emai recipients.
 * It is not compete as there remain issues with the delimiting and tokenisation of email addresses.
 For example the top 100 contains both "Steven J Kean" and "skean@enron.com".
 There are also some bad records like "John" where listings in the form "surname, firstname" have been mangled.
+An alternative approach - mapping to canonical form is included in the code but currently commented out.
 
 ## Data Exploration
 
