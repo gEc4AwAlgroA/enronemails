@@ -1,13 +1,15 @@
 # enronemails
 
 * This code can be used to perform some analysis on the Enron Email Corpus. It uses the metadata not the raw files.
+* It currently implements a sequential approach to allow running in a limited memory environment but there is commented code to show an alternative approach which is closer to a big data / distributed pattern.
 * There are some preliminary steps required to ingest the required data from AWS snapshot as desribed below.
 * The code can be built using `sbt assembly` to give fat jar with no external dependencies.
 * Usage ```java -jar enronemails-assembly-0.1-SNAPSHOT.jar input_path number_results```
 * It currently logs progress by outputting each filename as processed and output is saved at output.txt with Total count, Total Size
 and Average Size followed by list of number_results top emai recipients.
 * It is not compete as there remain issues with the delimiting and tokenisation of email addresses.
-For example the top 100 contains both "Steven J Kean" and "skean@enron.com"
+For example the top 100 contains both "Steven J Kean" and "skean@enron.com".
+There are also some bad records like "John" where listings in the form "surname, firstname" have been mangled.
 
 ## Data Exploration
 
