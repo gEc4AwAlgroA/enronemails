@@ -37,6 +37,7 @@ it's not obvious exactly what they mean.
 ## 1. Create EC2 instance
 * Assume awscli installed and configured with credentialsthat have necessary permissions (EC2 full should be sufficient)
 * Keypair exists with private key per ssh path (here 'test') and public key imported to aws as named (here 'test')
+* Security group 'inbound-ssh-all' must exist and allow access on port 22 from required ip addresses.
 * must be in us-east-1 to access snapshot without copying
 * jq is installed for json traversal (alternatively run the command without piping to jq and load the variable manually by inspection)
 
